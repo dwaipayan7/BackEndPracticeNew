@@ -1,0 +1,291 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\Dwaipayan Biswas> mongosh
+Current Mongosh Log ID: 672ddd3efb7271871bc73bf7
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.1
+Using MongoDB:          8.0.3
+Using Mongosh:          2.3.1
+mongosh 2.3.2 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-11-08T15:12:02.107+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> show collection
+MongoshInvalidInputError: [COMMON-10001] 'collection' is not a valid argument for "show".
+test> show db
+MongoshInvalidInputError: [COMMON-10001] 'db' is not a valid argument for "show".
+test> switch db
+Uncaught:
+SyntaxError: Unexpected token, expected "(" (1:7)
+
+> 1 | switch db
+    |        ^
+  2 |
+
+test> show collections
+candidates
+shops
+users
+test> use db
+switched to db db
+db> show collections
+users
+db> db.createCollection("users");
+{ ok: 1 }
+db> show collections
+users
+db> db.users.insertOne({id:1 , username: "Dwaipayan", age: 22});
+{
+  acknowledged: true,
+  insertedId: ObjectId('672ddec9fb7271871bc73bf8')
+}
+db> db.users.find()
+[
+  {
+    _id: ObjectId('66ed3f86021c653fc1c73bf9'),
+    id: 2,
+    username: 'tatay',
+    age: 23
+  },
+  {
+    _id: ObjectId('671046e599059694aec73bf9'),
+    id: 4,
+    username: 'Biswas',
+    age: 21
+  },
+  {
+    _id: ObjectId('671048f80d7d4d5371c73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  },
+  {
+    _id: ObjectId('671049f60d7d4d5371c73bf9'),
+    id: 5,
+    username: 'Shyam',
+    age: 1000,
+    email: 'shyam123@gmail.com'
+  },
+  {
+    _id: ObjectId('672ddec9fb7271871bc73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  }
+]
+db> db.users.insertOne({id:6 , username: "Hello", age: 24});
+{
+  acknowledged: true,
+  insertedId: ObjectId('672ddf57fb7271871bc73bf9')
+}
+db> db.users.find()
+[
+  {
+    _id: ObjectId('66ed3f86021c653fc1c73bf9'),
+    id: 2,
+    username: 'tatay',
+    age: 23
+  },
+  {
+    _id: ObjectId('671046e599059694aec73bf9'),
+    id: 4,
+    username: 'Biswas',
+    age: 21
+  },
+  {
+    _id: ObjectId('671048f80d7d4d5371c73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  },
+  {
+    _id: ObjectId('671049f60d7d4d5371c73bf9'),
+    id: 5,
+    username: 'Shyam',
+    age: 1000,
+    email: 'shyam123@gmail.com'
+  },
+  {
+    _id: ObjectId('672ddec9fb7271871bc73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  },
+  {
+    _id: ObjectId('672ddf57fb7271871bc73bf9'),
+    id: 6,
+    username: 'Hello',
+    age: 24
+  }
+]
+db> db.users.find({age: {$gt: 22}})
+[
+  {
+    _id: ObjectId('66ed3f86021c653fc1c73bf9'),
+    id: 2,
+    username: 'tatay',
+    age: 23
+  },
+  {
+    _id: ObjectId('671049f60d7d4d5371c73bf9'),
+    id: 5,
+    username: 'Shyam',
+    age: 1000,
+    email: 'shyam123@gmail.com'
+  },
+  {
+    _id: ObjectId('672ddf57fb7271871bc73bf9'),
+    id: 6,
+    username: 'Hello',
+    age: 24
+  }
+]
+db> db.users.find({age: {$gt: 24}})
+[
+  {
+    _id: ObjectId('671049f60d7d4d5371c73bf9'),
+    id: 5,
+    username: 'Shyam',
+    age: 1000,
+    email: 'shyam123@gmail.com'
+  }
+]
+db> db.users.find({age: {$lt: 24}})
+[
+  {
+    _id: ObjectId('66ed3f86021c653fc1c73bf9'),
+    id: 2,
+    username: 'tatay',
+    age: 23
+  },
+  {
+    _id: ObjectId('671046e599059694aec73bf9'),
+    id: 4,
+    username: 'Biswas',
+    age: 21
+  },
+  {
+    _id: ObjectId('671048f80d7d4d5371c73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  },
+  {
+    _id: ObjectId('672ddec9fb7271871bc73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  }
+]
+db> db.users.updateOne({username: 'Dwaipayan'}, {$set: {age: 32}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+db> db.users.find()
+[
+  {
+    _id: ObjectId('66ed3f86021c653fc1c73bf9'),
+    id: 2,
+    username: 'tatay',
+    age: 23
+  },
+  {
+    _id: ObjectId('671046e599059694aec73bf9'),
+    id: 4,
+    username: 'Biswas',
+    age: 21
+  },
+  {
+    _id: ObjectId('671048f80d7d4d5371c73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 32
+  },
+  {
+    _id: ObjectId('671049f60d7d4d5371c73bf9'),
+    id: 5,
+    username: 'Shyam',
+    age: 1000,
+    email: 'shyam123@gmail.com'
+  },
+  {
+    _id: ObjectId('672ddec9fb7271871bc73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  },
+  {
+    _id: ObjectId('672ddf57fb7271871bc73bf9'),
+    id: 6,
+    username: 'Hello',
+    age: 24
+  }
+]
+db> show databases
+admin              40.00 KiB
+config             96.00 KiB
+db                 72.00 KiB
+examRegistration  108.00 KiB
+hotel             184.00 KiB
+hotels            180.00 KiB
+local             104.00 KiB
+test              172.00 KiB
+user              144.00 KiB
+votes             180.00 KiB
+voting            180.00 KiB
+db> use db
+already on db db
+db> show collections
+users
+db> db.users.find(
+... )
+[
+  {
+    _id: ObjectId('66ed3f86021c653fc1c73bf9'),
+    id: 2,
+    username: 'tatay',
+    age: 23
+  },
+  {
+    _id: ObjectId('671046e599059694aec73bf9'),
+    id: 4,
+    username: 'Biswas',
+    age: 21
+  },
+  {
+    _id: ObjectId('671048f80d7d4d5371c73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 20
+  },
+  {
+    _id: ObjectId('671049f60d7d4d5371c73bf9'),
+    id: 5,
+    username: 'Shyam',
+    age: 1000,
+    email: 'shyam123@gmail.com'
+  },
+  {
+    _id: ObjectId('672ddec9fb7271871bc73bf8'),
+    id: 1,
+    username: 'Dwaipayan',
+    age: 22
+  },
+  {
+    _id: ObjectId('672ddf57fb7271871bc73bf9'),
+    id: 6,
+    username: 'Hello',
+    age: 24
+  }
+]
