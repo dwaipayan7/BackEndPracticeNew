@@ -8,6 +8,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+app.post('/person', (req, res) =>{
+    const data = req.body;
+
+    const newPerson = new Person(data);
+    newPerson.save()
+    res.status(201).json({message:"Data Saved"})
+})
 
 app.listen(3000, ()=>{
     console.log("Server Running");
