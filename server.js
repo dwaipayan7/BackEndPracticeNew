@@ -6,10 +6,8 @@ const Person = require('./models/person');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/test', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect('mongodb://localhost:27017/NewHotels')
+.then(() => {
     console.log("Connected to MongoDB");
 }).catch((error) => {
     console.error("Error connecting to MongoDB:", error);
@@ -32,6 +30,23 @@ app.post('/person', async (req, res) => {
         res.status(500).json({ message: "Error Saving Data" });
     }
 });
+
+//GET for person
+
+app.get('/person', async(req, res)=>{
+
+  try {
+
+    const data = await Person.find();
+    console.log("Getting the response");
+    res.status(200).json(data);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message:"Internal server error"});
+  }
+
+})
 
 // GET
 app.get('/', (req, res) => {

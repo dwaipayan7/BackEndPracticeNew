@@ -25,6 +25,10 @@ const personSchema = new mongoose.Schema({
     address: {
         type:String,
         required:true
+    },
+    salary: {
+        type:Number,
+        required:true
     }
 
 
