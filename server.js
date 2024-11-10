@@ -32,15 +32,11 @@ app.post('/person', async (req, res) => {
 });
 
 //GET for person
-
 app.get('/person', async(req, res)=>{
-
   try {
-
     const data = await Person.find();
     console.log("Getting the response");
     res.status(200).json(data);
-
   } catch (error) {
     console.log(error);
     res.status(500).json({message:"Internal server error"});
