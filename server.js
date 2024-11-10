@@ -22,6 +22,36 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //TODO MenuItems
 
 // POST endpoint to add a new person
+app.post('/menu', async (req, res) => {
+  try {
+      const data = req.body;
+      const newMenu = new MenuItem(data);
+      const response = await newMenu.save();
+      res.status(201).json(response);
+      console.log("Response Data Saved");
+  } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Error Saving Data" });
+  }
+});
+
+//GET for person
+app.get('/menu', async(req, res)=>{
+try {
+  const data = await MenuItem.find();
+  console.log("Getting the response");
+  res.status(200).json(data);
+} catch (error) {
+  console.log(error);
+  res.status(500).json({message:"Internal server error"});
+}
+
+})
+
+
+
+
+// POST endpoint to add a new person
 app.post('/person', async (req, res) => {
     try {
         const data = req.body;
