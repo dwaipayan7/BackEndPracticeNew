@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Person = require('./models/person');
+const MenuItem = require('./models/menu')
 
 const app = express();
 
@@ -16,6 +17,9 @@ mongoose.connect('mongodb://localhost:27017/NewHotels')
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+//TODO MenuItems
 
 // POST endpoint to add a new person
 app.post('/person', async (req, res) => {
