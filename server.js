@@ -19,9 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-//TODO MenuItems
-
-// POST endpoint to add a new person
+// POST endpoint to add a new menu
 app.post('/menu', async (req, res) => {
   try {
       const data = req.body;
@@ -35,7 +33,7 @@ app.post('/menu', async (req, res) => {
   }
 });
 
-//GET for person
+//GET for menu
 app.get('/menu', async(req, res)=>{
 try {
   const data = await MenuItem.find();
@@ -46,42 +44,24 @@ try {
   res.status(500).json({message:"Internal server error"});
 }
 
-})
-
-
-
-
-// POST endpoint to add a new person
-app.post('/person', async (req, res) => {
-    try {
-        const data = req.body;
-        const newPerson = new Person(data);
-        const response = await newPerson.save();
-        res.status(201).json(response);
-        console.log("Response Data Saved");
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: "Error Saving Data" });
-    }
 });
 
-//GET for person
-app.get('/person', async(req, res)=>{
-  try {
-    const data = await Person.find();
-    console.log("Getting the response");
-    res.status(200).json(data);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({message:"Internal server error"});
-  }
 
-})
 
 // GET
 app.get('/', (req, res) => {
     res.send("Hello, Dwaipayan");
 });
+
+const personRoutes = require('./routes/person.router');
+app.use('/person',personRoutes);
+
+
+app.listen(3000, () => {
+  console.log("Server Running on port 3000");
+});
+
+
 
 // app.get('/paneer', (req, res) => {
 //     res.send("Paneer is very tasty");
@@ -98,6 +78,3 @@ app.get('/', (req, res) => {
 // });
 
 // Start the server
-app.listen(3000, () => {
-    console.log("Server Running on port 3000");
-});
