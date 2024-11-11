@@ -28,6 +28,22 @@ router.post('/', async (req, res) => {
       res.status(500).json({ message: "Internal server error" });
     }
   });
+
+  router.get("/:taste", async (req, res) => {
+    try {
+      const tasteType = req.params.taste;
+      if (tasteType == "sweet" || tasteType == "spicy" || tasteType == "sour") {
+        const response = await MenuItem.find({taste: tasteType});
+        console.log("Fetched");
+        res.status(200).json(response);
+      } else {
+        res.status(500).json({ message: "Invalid taste type" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
   
 
   module.exports = router;
