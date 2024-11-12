@@ -45,7 +45,6 @@ router.get("/", async (req, res) => {
 });
 
 //PUT for update
-
 router.put("/:id", async (req, res) => {
 
   try {
@@ -70,6 +69,24 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 
+});
+
+router.delete('/:id', async(req, res) =>{
+  try {
+    
+    const personId = req.params.id;
+    const response = await Person.findByIdAndDelete(personId);
+
+    if (!response) {
+      return res.status(404).json({message: "Person not found"});
+    }
+    console.log("Data Deleted");
+    res.status(200).json(response);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 })
 
 
