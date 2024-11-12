@@ -1,5 +1,6 @@
 const express = require('express')
-const MenuItem = require('../models/menu')
+const MenuItem = require('../models/menu');
+const menu = require('../models/menu');
 const router = express.Router();
 
 
@@ -44,6 +45,51 @@ router.post('/', async (req, res) => {
       res.status(500).json({ message: "Internal server error" });
     }
   });
+
+  router.put('/:id', async(req, res) =>{
+    try {
+      
+      const data = req.params.id;
+      const updateMenuData = req.body;
+
+      const response = await MenuItem.findByIdAndUpdate(data, updateMenuData, {
+        new: true,
+        runValidators: true
+      });
+
+      if (!response) {
+          return res.status(404).json({message:"MenuItem does not exist"});
+      }
+
+      console.log("Data Updated");
+      res.status(200).json(response)
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  router.delete('/:id', async(req, res)=>{
+    try {
+      
+      const data = req.params.id;
+      const response = await MenuItem.findByIdAndDelete(data);
+
+      if (!response) {
+        return res.status(404).json({message:"Wrong Id"});
+      }
+
+      console.log("Data Deleted");
+      res.status(200).json(response);
+
+    } catch (error) {
+
+      console.log(error)
+      res.status(500).json({message:"Internal server error"})
+      
+    }
+  })
   
 
   module.exports = router;
