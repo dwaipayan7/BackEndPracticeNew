@@ -7,10 +7,20 @@ const app = express();
 // Connect to MongoDB
 connectDB().catch(err => console.error('Database connection error:', err));
 
+
+//Middleware Function
+
+const logRequest = (req, res, next) =>{
+  console.log(`[${new Date().toLocaleString()}] Request Made to: "${req.originalUrl}"`)
+  next()
+}
+
+
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(logRequest);
 
 // Default GET endpoint
 app.get('/', (req, res) => {
