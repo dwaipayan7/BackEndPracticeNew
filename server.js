@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MenuItem = require('./models/menu');
+const Person = require('./models/person')
 const connectDB = require('./config/db');
 const app = express();
+const passport = require('passport')
+const LocalStrategy = require('passport').Strategy
 
 // Connect to MongoDB
 connectDB().catch(err => console.error('Database connection error:', err));
@@ -21,6 +24,31 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(logRequest);
+
+//passport
+app.use(new LocalStrategy(async (username, password, done)=>{
+
+  try {
+
+    console.log('Received credentials: ', username, password);
+    const user = Person.findOne({username:username});
+    if(!user){
+      return done(null,false, {message:"Incorrect User"})
+    }
+
+    const isPasswordMatch = user.password === password ? true:false;
+
+    if (isPasswordMatch) {
+      return done(null,user)
+    }else{
+      return done(null,false, {message:"Incorrect User"})
+    }
+    
+  } catch (error) {
+    return done(error)
+  }
+
+}));
 
 // Default GET endpoint
 app.get('/', (req, res) => {
