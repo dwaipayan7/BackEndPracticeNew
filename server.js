@@ -35,7 +35,7 @@ const personRoutes = require('./routes/person.router');
 app.use('/person', personRoutes);
 
 const menuRoutes = require('./routes/menu.router');
-app.use('/menu',localAuthMiddleware ,menuRoutes);
+app.use('/menu' ,menuRoutes);
 
 app.listen(3000, () => {
   console.log("Server Running on port 3000");
