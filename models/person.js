@@ -41,27 +41,22 @@ const personSchema = new mongoose.Schema({
     }
 });
 
-personSchema.pre('save', async (next)=>{
+// Pre-save middleware to hash password if modified
+personSchema.pre('save', async function (next) {
     const person = this;
 
-    //Hash the person only it has been modified
+    // Hash the password only if it has been modified or is new
     if (!person.isModified('password')) {
         return next();
     }
-
     try {
-
         const salt = await bcrypt.genSalt(10);
-
         const hashedPassword = await bcrypt.hash(person.password, salt);
-
         person.password = hashedPassword;
-
-        next()
+        next();
     } catch (error) {
-        return next()
+        next(error);
     }
-
 });
 
 personSchema.methods.comparePassword = async function (candidatePassword) {
