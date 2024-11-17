@@ -1,20 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const Person = require('../models/person')
+const {jwtAuthMiddleware, generateToken} = require('../jwt/jwt')
 
 // POST endpoint to add a new person
-router.post("/", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const data = req.body;
+
     const newPerson = new Person(data);
     const response = await newPerson.save();
-    res.status(201).json(response);
     console.log("Response Data Saved");
+
+    // Generate token
+    const token = generateToken({ username: response.username }); // Adjust the payload as needed
+    console.log("Token:", token);
+
+    // Send a single response
+    res.status(201).json({ response: response, token:token });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: "Error Saving Data" });
   }
 });
+
 
 router.get("/:workType", async (req, res) => {
   try {
