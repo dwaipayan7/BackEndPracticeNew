@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require('../models/user');
 const { jwtAuthMiddleware, generateToken } = require('../jwt/jwt'); // Ensure this is correctly imported
+const Candidate = require("../models/candidate");
 
 // Signup Route
 router.post("/signup", async (req, res) => {
@@ -61,7 +62,7 @@ router.put("/profile/password", jwtAuthMiddleware, async (req, res) => {
         const userId = req.user.id;
         const { currentPassword, newPassword } = req.body;
 
-        const user = await User.findById(userId);
+        const user = await Candidate.findById(userId);
 
         if (!user || !(await user.comparePassword(currentPassword))) {
             return res.status(401).json({ error: "Invalid current password" });
@@ -76,5 +77,26 @@ router.put("/profile/password", jwtAuthMiddleware, async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+router.delete('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
+    try{
+        if(!checkAdminRole(req.user.id))
+            return res.status(403).json({message: 'user does not have admin role'});
+        
+        const candidateID = req.params.candidateID; // Extract the id from the URL parameter
+
+        const response = await Candidate.findByIdAndDelete(candidateID);
+
+        if (!response) {
+            return res.status(404).json({ error: 'Candidate not found' });
+        }
+
+        console.log('candidate deleted');
+        res.status(200).json(response);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+})
 
 module.exports = router;
